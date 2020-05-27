@@ -107,7 +107,9 @@ function addEmployee(){
                 // List all available roles which will automatically place employee is appropriate department
             ]
         }
-])
+    ]).then(data => {
+    //    input new employee into table
+    })
 }
 // 3
 // when user selects to edit an employee role
