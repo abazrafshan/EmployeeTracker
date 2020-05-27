@@ -15,16 +15,6 @@ connection.connect(err => {
     promptUser();
 });
 
-// User begins application
-// user is prompted with options: 
-// 1. View all employees with respective departments and roles
-// 2. Add an employee along with their role and department
-// 3. Edit an employee's role
-// 4. View all roles
-// 5. View all departments
-// 6. Add role
-// 7. Add department
-
 function promptUser(){
     inquirer.prompt({
         type: "list",
@@ -98,7 +88,26 @@ function viewEmployees(){
 // Prompt user with options again
 
 function addEmployee(){
-
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Enter the employee's first name",
+            name: "firstname"
+        },
+        {
+            type: "input",
+            message: "Enter the employee's last name",
+            name: "lastname"
+        },
+        {
+            type: "list",
+            message: "Assign a role for the employee",
+            name: "role",
+            choices: [
+                // List all available roles which will automatically place employee is appropriate department
+            ]
+        }
+])
 }
 // 3
 // when user selects to edit an employee role
@@ -147,5 +156,5 @@ function addRole(){
 // prompt user with options
 
 function addDepartment(){
-    
+
 }
