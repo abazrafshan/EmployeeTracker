@@ -112,22 +112,19 @@ function addEmployee(){
             type: "input",
             message: "Assign a role id for the employee",
             name: "roleid"
-        }
-        // {
-        //     type: "list",
-        //     message: "Select the employees manager if applicable",
-        //     name: "manager",
-        //     choices: []
-        //     // How do I present the list of managers to the user
-        // }
-        
+        },
+        {
+            type: "input",
+            message: "Assign a manager id for the employee",
+            name: "managerid"
+        },
     ]).then(data => {
         var query = "INSERT INTO employees SET ?";
         connection.query(query, 
             {first_name: data.firstname,
             last_name: data.lastname, 
-            role_id: data.roleid},
-            // {manager_id: data.manager}], 
+            role_id: data.roleid,
+            manager_id: data.managerid},
             (err,res) => {
             if (err) throw err;
             console.log(res.affectedRows + " post inserted\n");
