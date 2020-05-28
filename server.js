@@ -154,18 +154,17 @@ function updateRole(){
                 choices: ()=> {
                     var choiceArray = [];
                     for (var i = 0; i < results.length; i++){
-                        choiceArray.push({Name: `${results[i].first_name} ${results[i].last_name}`, value: ` ${results[i].id}`});
-                        // ${results[i].first_name} ${results[i].last_name}
+                        choiceArray.push({name: `${results[i].first_name} ${results[i].last_name}`, value: `${results[i].id}`});
                     }
                     console.log(choiceArray);
                     return choiceArray;
                 },
             }
         ]).then(answer => {
-            var chosenemployee = answer.choice;
-            console.log(chosenemployee);
+
             var query = "select roles.id AS rid, title, department_id AS did from roles inner join departments on roles.department_id = departments.id";
             connection.query(query, (err, res) => {
+                console.log(res)
                 if (err) throw err;
                 inquirer.prompt([
                 {
@@ -175,29 +174,23 @@ function updateRole(){
                     choices: () => {
                         var rolesArray = [];
                         for (var i = 0; i < res.length; i++){
-                            rolesArray.push({Name: `${res[i].title}`, value: `${res[i].rid}`});
+                            rolesArray.push({name: `${res[i].title}`, value: `${res[i].rid}`,  did: `${res[i].did}`});
                         }
-                        console.log(rolesArray);
                         return rolesArray;
+                        console.log(rolesArray);
                     },
-                },
-            ]).then(answer => {
-                console.log(answer);
-                var query = "update employees set ? where ?";
-                connection.query(query, [
-                    {
-                        role_id: answer.updaterole.rid,
-                        department_id: answer.updaterole.did
-                    },
-                    // {
-                        
-                    // }
-                ], (err, res) => {
-                    if (err) throw err;
-                    console.log("Update successful");
-                    viewEmployees();
                 }
-                );
+            ]).then(result => {
+            var chosenemployee = answer.choice;
+            console.log(chosenemployee);
+                console.log(result);
+                var query = "update employees set role_id = ?, department_id = ? where employees.id = ?";
+                // connection.query(query, [result.updaterole, result.updaterole.did, chosenemployee],(err, res) => {
+                //     if (err) throw err;
+                //     console.log("Update successful");
+                //     viewEmployees();
+                // }
+                // );
             }) ;
             });
         });
