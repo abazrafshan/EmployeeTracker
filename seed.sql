@@ -64,4 +64,7 @@ inner join departments on departments.id = roles.department_id;
 
 select title, department_name from roles inner join departments on departments.id = roles.department_id;
 
+select employees.id, first_name,last_name,title,department_name from employees inner join roles on roles.id = employees.role_id inner join departments on departments.id = roles.department_id;
+
+select roles.id AS rid, title, department_id AS did from roles inner join departments on roles.department_id = departments.id;
 -- select department_name from departments;

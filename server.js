@@ -142,7 +142,67 @@ function addEmployee(){
 // prompt user with options again
 
 function updateRole(){
-
+    var query = "select employees.id, first_name,last_name,title,department_name from employees inner join roles on roles.id = employees.role_id inner join departments on departments.id = roles.department_id";
+    connection.query(query, (err,results) => {
+        if (err) throw err;
+        // console.table(results);
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "choice",
+                message: "Whose role would you like to modify",
+                choices: ()=> {
+                    var choiceArray = [];
+                    for (var i = 0; i < results.length; i++){
+                        choiceArray.push({Name: `${results[i].first_name} ${results[i].last_name}`, value: ` ${results[i].id}`});
+                        // ${results[i].first_name} ${results[i].last_name}
+                    }
+                    console.log(choiceArray);
+                    return choiceArray;
+                },
+            }
+        ]).then(answer => {
+            var chosenemployee = answer.choice;
+            console.log(chosenemployee);
+            var query = "select roles.id AS rid, title, department_id AS did from roles inner join departments on roles.department_id = departments.id";
+            connection.query(query, (err, res) => {
+                if (err) throw err;
+                inquirer.prompt([
+                {
+                    type: "rawlist",
+                    name: "updaterole",
+                    message: "What is their new role?",
+                    choices: () => {
+                        var rolesArray = [];
+                        for (var i = 0; i < res.length; i++){
+                            rolesArray.push({Name: `${res[i].title}`, value: `${res[i].rid}`});
+                        }
+                        console.log(rolesArray);
+                        return rolesArray;
+                    },
+                },
+            ]).then(answer => {
+                console.log(answer);
+                var query = "update employees set ? where ?";
+                connection.query(query, [
+                    {
+                        role_id: answer.updaterole.rid,
+                        department_id: answer.updaterole.did
+                    },
+                    // {
+                        
+                    // }
+                ], (err, res) => {
+                    if (err) throw err;
+                    console.log("Update successful");
+                    viewEmployees();
+                }
+                );
+            }) ;
+            });
+        });
+        // promptUser();
+    });
 }
 
 function addRole(){
@@ -161,7 +221,6 @@ function addRole(){
             type: "input",
             message: "Please enter the department id this role will belong to",
             name: "newroledepartment"
-            // How do I present the user with my choices as my departmentArray?
         }
     ]).then(data => {
             var query = "INSERT INTO roles SET ?";
