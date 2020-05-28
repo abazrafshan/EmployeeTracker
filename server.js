@@ -73,7 +73,12 @@ function promptUser(){
 // Prompt user with options again
 
 function viewEmployees(){
-
+    var query = "select first_name,last_name,manager_id,title,salary,department_name from employees inner join roles on roles.id = employees.role_id inner join departments on departments.id = roles.department_id";
+    connection.query(query,(err,res) => {
+        if (err) throw err;
+        console.table(res);
+        promptUser();
+    })
 }
 
 // 2
