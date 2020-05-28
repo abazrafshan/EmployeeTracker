@@ -43,10 +43,10 @@ insert into employees (first_name, last_name, role_id, manager_id) values ("John
 insert into employees (first_name, last_name, role_id, manager_id) values ("Erik","Generik",4,null);
 insert into employees (first_name, last_name, role_id, manager_id) values ("Pam","Walters",2,null);
 insert into employees (first_name, last_name, role_id, manager_id) values ("Dustin","Boris",8,null);
-insert into employees (first_name, last_name, role_id, manager_id) values ("Claudia","Law",7,5);
-insert into employees (first_name, last_name, role_id, manager_id) values ("Javi","Bo",1,3);
-insert into employees (first_name, last_name, role_id, manager_id) values ("Lucy","Dune",3,4);
-insert into employees (first_name, last_name, role_id, manager_id) values ("Ben","T",5,4);
+insert into employees (first_name, last_name, role_id, manager_id) values ("Claudia","Law",7,4);
+insert into employees (first_name, last_name, role_id, manager_id) values ("Javi","Bo",1,2);
+insert into employees (first_name, last_name, role_id, manager_id) values ("Lucy","Dune",3,3);
+insert into employees (first_name, last_name, role_id, manager_id) values ("Ben","T",5,3);
 
 
 
@@ -57,6 +57,9 @@ SELECT * FROM departments;
 select * from employees inner join roles on roles.id = employees.role_id inner join departments on departments.id = roles.department_id;
 
 select first_name,last_name,manager_id,title,salary,department_name from employees inner join roles on roles.id = employees.role_id 
+inner join departments on departments.id = roles.department_id;
+
+select employees.id,first_name,last_name,manager_id,title,salary,department_name from employees inner join roles on roles.id = employees.role_id 
 inner join departments on departments.id = roles.department_id;
 
 select title, department_name from roles inner join departments on departments.id = roles.department_id;
