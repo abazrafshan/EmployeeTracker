@@ -104,11 +104,30 @@ function addEmployee(){
             message: "Assign a role for the employee",
             name: "role",
             choices: [
-                // List all available roles which will automatically place employee is appropriate department
+                "Sales Lead",
+                "Salesperson",
+                "Software Engineer",
+                "Lead Engineer",
+                "Account Manager",
+                "Accountant",
+                "Legal Team Lead",
+                "Lawyer"
+            ]
+        },
+        {
+            type: "list",
+            message: "Select the employees manager if applicable",
+            name: "manager",
+            choices: [
+                // List names of employees on team
             ]
         }
     ]).then(data => {
-    //    input new employee into table
+        var query = "INSERT INTO employees SET ?";
+        connection.query(query, [{first_name: data.firstname},{last_name: data.lastname}, {role_id: data.role},{manager_id: data.manager}], (err,res) => {
+            if (err) throw err;
+            console.log(res.affectedRows + " post inserted\n")
+        })    
     })
 }
 // 3
