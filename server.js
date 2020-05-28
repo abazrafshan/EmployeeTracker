@@ -96,17 +96,6 @@ function viewDepartments(){
     })
 };
 
-// 2
-// when user selects to add an employee
-// user is prompted to input a first name (varchar30)
-// user is prompted to input last name (varchar30)
-// user is prompted to select role from a list of roles (int? for role id)
-// user is prompted to select employees manager from list of current employees(int? for manager id)
-// if user doesn't have a manager, default value is null
-// new row is added to table of employees containing data stored from series of prompts
-// console log updated table of all employees
-// Prompt user with options again
-
 function addEmployee(){
     inquirer.prompt([
         {
@@ -159,12 +148,6 @@ function updateRole(){
 
 }
 
-// 6
-// when user chooses to add role, user is prompted to enter title of new role
-// when user inputs title of new role, it is availalbe in the array of roles
-// console log updated list of roles
-// prompt user with options
-
 function addRole(){
     inquirer.prompt([
         {
@@ -198,12 +181,19 @@ function addRole(){
         })
 };
 
-// 7
-// when user chooses to add department, user is prompted to enter title of new department
-// when user inputs title of new dept, it is availalbe in the array of departments
-// console log updated list of departments
-// prompt user with options
-
 function addDepartment(){
+    inquirer.prompt({
+        type: "input",
+        message: "Enter the name of the department you wish to add, department id will be auto-generated",
+        name: "newdepartment"
+    }).then(data => {
+        var query = "INSERT INTO departments SET ?";
+        connection.query(query, {department_name: data.newdepartment},
+        (err,res) => {
+            if (err) throw err;
+            console.log(res.affectedRows + " post inserted\n");
+            promptUser();
+        })
+    })
 
-}
+};
