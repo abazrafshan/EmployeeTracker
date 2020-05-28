@@ -166,7 +166,6 @@ function updateRole(){
 // prompt user with options
 
 function addRole(){
-    connection.query()
     inquirer.prompt([
         {
             type: "input",
@@ -179,19 +178,25 @@ function addRole(){
             name: "newrolesalary"
         },
         {
-            type: "list",
-            message: "Which department does this role belong to?",
-            name: "newroledepartment",
-            choices:[]
+            type: "input",
+            message: "Please enter the department id this role will belong to",
+            name: "newroledepartment"
             // How do I present the user with my choices as my departmentArray?
         }
     ]).then(data => {
-            var query = "";
-            connection.query(query, (err,res) =>{
+            var query = "INSERT INTO roles SET ?";
+            connection.query(query, {
+                title: data.newroletitle,
+                salary: data.newrolesalary,
+                department_id: data.newroledepartment
+            },
+            (err,res) =>{
                 if (err) throw err;
+                console.log(res.affectedRows + " post inserted\n");
+                promptUser();
             })
         })
-}
+};
 
 // 7
 // when user chooses to add department, user is prompted to enter title of new department
