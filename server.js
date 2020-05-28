@@ -158,7 +158,7 @@ function viewRoles(){
         if (err) throw err;
         console.table(res);
         promptUser();
-})
+    })
 };
 
 // 5
@@ -167,8 +167,13 @@ function viewRoles(){
 // prompt user with options
 
 function viewDepartments(){
-
-}
+    var query = "select department_name from departments";
+    connection.query(query,(err,res) => {
+        if (err) throw err;
+        console.table(res);
+        promptUser();
+    })
+};
 
 // 6
 // when user chooses to add role, user is prompted to enter title of new role
