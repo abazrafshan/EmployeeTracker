@@ -79,7 +79,7 @@ function viewEmployees(){
 };
 
 function viewRoles(){
-    var query = "select title, department_name from roles inner join departments on departments.id=roles.department_id";
+    var query = "select roles.id, title, department_name from roles inner join departments on departments.id=roles.department_id";
     connection.query(query,(err,res) => {
         if (err) throw err;
         console.table(res);
@@ -88,7 +88,7 @@ function viewRoles(){
 };
 
 function viewDepartments(){
-    var query = "select department_name from departments";
+    var query = "select * from departments";
     connection.query(query,(err,res) => {
         if (err) throw err;
         console.table(res);
