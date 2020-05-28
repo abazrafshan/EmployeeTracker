@@ -153,8 +153,13 @@ function updateRole(){
 // prompt with options
 
 function viewRoles(){
-
-}
+    var query = "select title, department_name from roles inner join departments on departments.id=roles.department_id";
+    connection.query(query,(err,res) => {
+        if (err) throw err;
+        console.table(res);
+        promptUser();
+})
+};
 
 // 5
 // when user chooses to view all departments
