@@ -142,7 +142,8 @@ function addEmployee(){
 // prompt user with options again
 
 function updateRole(){
-    var query = "select employees.id, first_name,last_name,title,department_name from employees inner join roles on roles.id = employees.role_id inner join departments on departments.id = roles.department_id";
+    var query = "select * from employees";
+    // "select employees.id, first_name,last_name,title,department_name from employees inner join roles on roles.id = employees.role_id inner join departments on departments.id = roles.department_id";
     connection.query(query, (err,results) => {
         if (err) throw err;
         // console.table(results);
@@ -154,15 +155,15 @@ function updateRole(){
                 choices: ()=> {
                     var choiceArray = [];
                     for (var i = 0; i < results.length; i++){
-                        choiceArray.push({name: `${results[i].first_name} ${results[i].last_name}`, value: `${results[i].id}`});
+                        choiceArray.push({name: `${results[i].first_name} ${results[i].last_name}`, value: `${results[i].eid}`});
                     }
                     console.log(choiceArray);
                     return choiceArray;
                 },
             }
         ]).then(answer => {
-
-            var query = "select roles.id AS rid, title, department_id AS did from roles inner join departments on roles.department_id = departments.id";
+            var eid = answer.choice;
+            var query = "select roles.id AS rid, roles.title, roles.department_id AS did from roles inner join departments on roles.department_id = departments.id";
             connection.query(query, (err, res) => {
                 console.log(res)
                 if (err) throw err;
@@ -174,23 +175,31 @@ function updateRole(){
                     choices: () => {
                         var rolesArray = [];
                         for (var i = 0; i < res.length; i++){
-                            rolesArray.push({name: `${res[i].title}`, value: `${res[i].rid}`,  did: `${res[i].did}`});
+                            rolesArray.push({name: `${res[i].title}`, value: {rid :`${res[i].rid}`,  did: `${res[i].did}`}});
                         }
                         return rolesArray;
-                        console.log(rolesArray);
+                        // console.log(rolesArray);
                     },
                 }
-            ]).then(result => {
-            var chosenemployee = answer.choice;
-            console.log(chosenemployee);
+            ]).then((result) => {
+            // var chosenemployee = answer.choice;
+            // console.log(chosenemployee);
+            console.log("this is working")
                 console.log(result);
-                var query = "update employees set role_id = ?, department_id = ? where employees.id = ?";
-                // connection.query(query, [result.updaterole, result.updaterole.did, chosenemployee],(err, res) => {
-                //     if (err) throw err;
-                //     console.log("Update successful");
-                //     viewEmployees();
-                // }
-                // );
+                var query = "update employees set ? where ?";
+                connection.query(query, 
+                        [{
+                            role_id: result.updaterole.rid
+                        // department_id: result.updaterole.did
+                        
+                    }, 
+                        {eid: eid}],
+                        function (err, res) {
+                    if (err) throw err;
+                    console.log("Update successful");
+                    viewEmployees();
+                }
+                );
             }) ;
             });
         });
